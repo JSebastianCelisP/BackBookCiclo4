@@ -12,18 +12,15 @@ public class Transaction {
     private int time;
     private double value;
     private Date date;
-    private int count;
 
-    public Transaction(int id, int idUser, int idBookR, int time, double value, Date date, int count) {
+    public Transaction(int id, int idUser, int idBookR, int time, double value, Date date) {
         this.id = id;
         this.idUser = idUser;
         this.idBookR = idBookR;
         this.time = time;
         this.value = value;
         this.date = date;
-        this.count = count;
     }
-
 
     public int getId() {
         return id;
@@ -71,13 +68,5 @@ public class Transaction {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 }
