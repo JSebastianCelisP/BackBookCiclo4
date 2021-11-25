@@ -28,11 +28,11 @@ public class TransactionController {
         this.accountRepository = accountRepository;
     }
 
-    @PostMapping("/transaction")
-    Transaction newTransaction(@RequestBody Transaction transaction){
+    @PostMapping("/Transaction")
+    Transaction newTransaction(@RequestBody Transaction transaction) {
 
         AccountB account = accountRepository.findById(transaction.getIdUser()).orElse(null);
-        BookS    book    = bookSRepository.findById(transaction.getIdBookS()).orElse(null);
+        BookS book = bookSRepository.findById(transaction.getIdBookS()).orElse(null);
 
         if (account == null)
             throw new AccountBNotFoundException("No se encontro una cuenta con el id: " + transaction.getIdUser());
@@ -40,10 +40,10 @@ public class TransactionController {
         if (book == null)
             throw new BookSNotFoundException("No se encontro un libro con el id: " + transaction.getIdBookS());
 
-        if(account.getBalance() < book.getPrice() * transaction.getCount())
+        if (account.getBalance() < book.getPrice() * transaction.getCount())
             throw new InsufficientBalanceException("Saldo Insuficiente");
 
-        if(book.getUnits() < transaction.getCount())
+        if (book.getUnits() < transaction.getCount())
             throw new InsufficientUnitsException("Unidades Insuficientes");
 
         account.setBalance(account.getBalance() - book.getPrice() * transaction.getCount());
@@ -57,7 +57,7 @@ public class TransactionController {
         return transactionRepository.save(transaction);
     }
 
-    @GetMapping("/transactions/{idUser}")
+    @GetMapping("/Transaction/list/{idUser}")
     List<Transaction> getUserTransactions(@PathVariable int idUser){
         AccountB account = accountRepository.findById(idUser).orElse(null);
         if (account == null)
@@ -67,4 +67,11 @@ public class TransactionController {
 
         return transactions;
     }
+
+    @DeleteMapping("/Transaction/delete")
+    void deleteTransaction(@RequestBody Transaction transaction){
+        transactionRepository.delete(transaction);
+        return;
+    }
+
 }

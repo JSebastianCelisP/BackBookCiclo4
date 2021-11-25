@@ -28,7 +28,7 @@ public class BookSController {
         book = bookSRepository.findByTitle(title);
 
         if (book == null){
-            throw new BookSNotFoundException("No se encontro un libro con el id " + title);
+            throw new BookSNotFoundException("No se encontro un libro con el nombre " + title);
         }
         return book;
     }
@@ -54,6 +54,4 @@ public class BookSController {
         bookSRepository.delete(book);
         return;
     }
-
-
 }
