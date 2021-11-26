@@ -10,14 +10,16 @@ public class Transaction {
     private int id;
     private int idUser;
     private int idBookS;
+    private String nameBookS;
     private double value;
     private Date date;
     private int count;
 
-    public Transaction(int id, int idUser, int idBookS, double value, Date date, int count) {
+    public Transaction(int id, int idUser, int idBookS, String nameBookS, double value, Date date, int count) {
         this.id = id;
         this.idUser = idUser;
         this.idBookS = idBookS;
+        this.nameBookS = nameBookS;
         this.value = value;
         this.date = date;
         this.count = count;
@@ -47,6 +49,13 @@ public class Transaction {
         this.idBookS = idBookS;
     }
 
+    public String getNameBookS() {
+        return nameBookS;
+    }
+
+    public void setNameBookS(String nameBookS) {
+        this.nameBookS = nameBookS;
+    }
     public double getValue() {
         return value;
     }

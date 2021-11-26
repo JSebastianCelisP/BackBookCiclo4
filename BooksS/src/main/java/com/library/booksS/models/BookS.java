@@ -7,15 +7,15 @@ public class BookS {
     private int idBookS;
     private String title;
     private int units;
-    private String autor;
+    private String author;
     private String description;
     private double price;
 
-    public BookS(int idBookS, String title, int units, String autor, String description, double price) {
+    public BookS(int idBookS, String title, int units, String author, String description, double price) {
         this.idBookS = idBookS;
         this.title = title;
         this.units = units;
-        this.autor = autor;
+        this.author = author;
         this.description = description;
         this.price = price;
     }
@@ -44,12 +44,12 @@ public class BookS {
         this.units = units;
     }
 
-    public String getAutor() {
-        return autor;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getDescription() {

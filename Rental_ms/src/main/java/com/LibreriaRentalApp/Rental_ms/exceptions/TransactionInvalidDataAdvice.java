@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 @ResponseBody
-public class InsufficientUnitsAdvice {
+public class TransactionInvalidDataAdvice {
     @ResponseBody
-    @ExceptionHandler(InsufficientUnitsException.class)
+    @ExceptionHandler(TransactionInvalidDataExpetion.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    String InsufficientUnitsAdvice(InsufficientUnitsException ex) {
+    String TransactionInvalidDataAdvice(TransactionInvalidDataExpetion ex) {
         return ex.getMessage();
     }
 }

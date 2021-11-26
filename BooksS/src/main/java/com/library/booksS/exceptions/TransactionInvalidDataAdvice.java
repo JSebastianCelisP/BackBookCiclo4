@@ -1,4 +1,4 @@
-package com.LibreriaRentalApp.Rental_ms.exceptions;
+package com.library.booksS.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 @ResponseBody
-public class InsufficientUnitsAdvice {
+public class TransactionInvalidDataAdvice {
     @ResponseBody
-    @ExceptionHandler(InsufficientUnitsException.class)
+    @ExceptionHandler(TransactionInvalidDataExpetion.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    String InsufficientUnitsAdvice(InsufficientUnitsException ex) {
+    String TransactionInvalidDataAdvice(TransactionInvalidDataExpetion ex) {
         return ex.getMessage();
     }
 }

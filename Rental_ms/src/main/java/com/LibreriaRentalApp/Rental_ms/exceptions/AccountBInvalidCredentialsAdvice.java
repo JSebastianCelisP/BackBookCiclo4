@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 @ResponseBody
-public class InsufficientUnitsAdvice {
+public class AccountBInvalidCredentialsAdvice {
     @ResponseBody
-    @ExceptionHandler(InsufficientUnitsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    String InsufficientUnitsAdvice(InsufficientUnitsException ex) {
+    @ExceptionHandler(AccountBInvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.LOCKED)
+    String EntityNotFoundAdvice(AccountBInvalidCredentialsException ex) {
         return ex.getMessage();
     }
 }

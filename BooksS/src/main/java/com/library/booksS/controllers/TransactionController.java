@@ -1,8 +1,10 @@
 package com.library.booksS.controllers;
 
 import com.library.booksS.exceptions.InsufficientUnitsException;
+import com.library.booksS.exceptions.TransactionInvalidDataExpetion;
 import com.library.booksS.repositories.AccountRepository;
 import com.library.booksS.models.AccountB;
+import com.library.booksS.exceptions.AccountBInvalidCredentialsException;
 import com.library.booksS.exceptions.AccountBNotFoundException;
 import com.library.booksS.repositories.BookSRepository;
 import com.library.booksS.models.BookS;
@@ -28,47 +30,53 @@ public class TransactionController {
         this.accountRepository = accountRepository;
     }
 
-    @PostMapping("/Transaction")
-    Transaction newTransaction(@RequestBody Transaction transaction) {
-
-        AccountB account = accountRepository.findById(transaction.getIdUser()).orElse(null);
+    @PostMapping("/Transaction/user/{idUser}")
+    Transaction newTransaction(@RequestBody Transaction transaction, @PathVariable int idUser) {
+        Transaction transaccionR = transactionRepository.findById(transaction.getId()).orElse(null);
+        AccountB account = accountRepository.findById(idUser).orElse(null);
         BookS book = bookSRepository.findById(transaction.getIdBookS()).orElse(null);
-
+            
         if (account == null)
-            throw new AccountBNotFoundException("No se encontro una cuenta con el id: " + transaction.getIdUser());
+            throw new AccountBNotFoundException("Account not found");
 
         if (book == null)
-            throw new BookSNotFoundException("No se encontro un libro con el id: " + transaction.getIdBookS());
+            throw new BookSNotFoundException("Book not found");
 
         if (account.getBalance() < book.getPrice() * transaction.getCount())
-            throw new InsufficientBalanceException("Saldo Insuficiente");
+            throw new InsufficientBalanceException("Insufficient balance");
 
         if (book.getUnits() < transaction.getCount())
-            throw new InsufficientUnitsException("Unidades Insuficientes");
+            throw new InsufficientUnitsException("Not enough units in stock");
+        if(transaction.getIdUser() != idUser)
+            throw new AccountBInvalidCredentialsException("Invalid credentials");
+        else if(transaccionR != null){
+            throw new TransactionInvalidDataExpetion("Invalid data, try again");
+        }
+        else{
+            account.setBalance(account.getBalance() - book.getPrice() * transaction.getCount());
+            accountRepository.save(account);
 
-        account.setBalance(account.getBalance() - book.getPrice() * transaction.getCount());
-        accountRepository.save(account);
+            book.setUnits(book.getUnits() - transaction.getCount());
+            bookSRepository.save(book);
 
-        book.setUnits(book.getUnits() - transaction.getCount());
-        bookSRepository.save(book);
-
-        transaction.setValue(book.getPrice() * transaction.getCount());
-        transaction.setDate(new Date());
-        return transactionRepository.save(transaction);
+            transaction.setValue(book.getPrice() * transaction.getCount());
+            transaction.setDate(new Date());
+            return transactionRepository.save(transaction);
+        }
     }
 
     @GetMapping("/Transaction/list/{idUser}")
     List<Transaction> getUserTransactions(@PathVariable int idUser){
         AccountB account = accountRepository.findById(idUser).orElse(null);
         if (account == null)
-            throw new AccountBNotFoundException("No se encontro una cuenta con el id: " + idUser);
-
-        List<Transaction> transactions = transactionRepository.findByIdUser(idUser);
-
-        return transactions;
+            throw new AccountBNotFoundException("Account not found");
+        else{
+            List<Transaction> transactions = transactionRepository.findByIdUser(idUser);
+            return transactions;
+        }
     }
 
-    @DeleteMapping("/Transaction/delete")
+    @DeleteMapping("/Transaction/delete/")
     void deleteTransaction(@RequestBody Transaction transaction){
         transactionRepository.delete(transaction);
         return;

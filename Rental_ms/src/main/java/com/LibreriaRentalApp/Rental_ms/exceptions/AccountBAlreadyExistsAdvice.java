@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 @ResponseBody
-public class InsufficientBalanceAdvice {
+public class AccountBAlreadyExistsAdvice {
     @ResponseBody
-    @ExceptionHandler(InsufficientBalanceException.class)
+    @ExceptionHandler(AccountBAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    String InsufficientBalanceAdvice(InsufficientBalanceException ex) {
+    String EntityNotFoundAdvice(AccountBAlreadyExistsException ex) {
         return ex.getMessage();
     }
 }

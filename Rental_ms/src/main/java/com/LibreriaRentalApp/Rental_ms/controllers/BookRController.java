@@ -1,5 +1,6 @@
 package com.LibreriaRentalApp.Rental_ms.controllers;
 
+import com.LibreriaRentalApp.Rental_ms.exceptions.BookRAlreadyExistsException;
 import com.LibreriaRentalApp.Rental_ms.exceptions.BookRNotFoundException;
 import com.LibreriaRentalApp.Rental_ms.models.BookR;
 import com.LibreriaRentalApp.Rental_ms.repositories.BookRRepository;
@@ -18,7 +19,7 @@ public class BookRController {
     @GetMapping("/Books/id/{idBook}")
     BookR getBookById(@PathVariable int idBook){
         return bookRRepository.findById(idBook)
-                .orElseThrow(() -> new BookRNotFoundException("No se encontro un libro con el id " + idBook));
+                .orElseThrow(() -> new BookRNotFoundException("Book not found"));
     }
 
     @GetMapping("/Books/title/{title}")
@@ -27,7 +28,7 @@ public class BookRController {
         book = bookRRepository.findByTitle(title);
 
         if (book == null){
-            throw new BookRNotFoundException("No se encontro un libro con el nombre " + title);
+            throw new BookRNotFoundException("Book not found");
         }
         return book;
     }
@@ -40,18 +41,29 @@ public class BookRController {
 
     @PostMapping("/Books")
     BookR newBook(@RequestBody BookR book){
-        return bookRRepository.save(book);
+        BookR bookR = bookRRepository.findById(book.getIdBookR()).orElse(null);
+        if(bookR != null){
+            throw new BookRAlreadyExistsException("Book already exists");
+        }else{
+            return bookRRepository.save(book);
+        }
     }
 
-    @PostMapping("/Books/update")
-    BookR updateBook(@RequestBody BookR book){
-        return bookRRepository.save(book);
+    @PostMapping("/Books/update/{idBookR}")
+    BookR updateBook(@RequestBody BookR book, @PathVariable int idBookR){
+        if(book.getIdBookR() != idBookR){
+            throw new BookRNotFoundException("Invalid credential");            
+        }else{
+            return bookRRepository.save(book);
+        }
     }
 
-    @DeleteMapping("/Books/delete")
-    void deleteBook(@RequestBody BookR book){
-        bookRRepository.delete(book);
-        return;
+    @DeleteMapping("/Books/delete/{idBookR}")
+    void deleteBook(@RequestBody BookR book, @PathVariable int idBookR){
+        if(book.getIdBookR() != idBookR){
+            throw new BookRNotFoundException("Invalid credential");
+        }else{
+            bookRRepository.delete(book);
+        }
     }
-
 }

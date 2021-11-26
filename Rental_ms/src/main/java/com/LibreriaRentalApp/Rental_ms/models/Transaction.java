@@ -9,16 +9,18 @@ public class Transaction {
     private int id;
     private int idUser;
     private int idBookR;
-    private int time;
+    private String nameBookR;
     private double value;
+    private int count;
     private Date date;
 
-    public Transaction(int id, int idUser, int idBookR, int time, double value, Date date) {
+    public Transaction(int id, int idUser, int idBookR, String nameBookR, int time, double value, int count, Date date) {
         this.id = id;
         this.idUser = idUser;
         this.idBookR = idBookR;
-        this.time = time;
+        this.nameBookR = nameBookR;
         this.value = value;
+        this.count = count;
         this.date = date;
     }
 
@@ -45,13 +47,12 @@ public class Transaction {
     public void setIdBookR(int idBookR) {
         this.idBookR = idBookR;
     }
-
-    public int getTime() {
-        return time;
+    public String getnameBookR() {
+        return nameBookR;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setnameBookR(String nameBookR) {
+        this.nameBookR = nameBookR;
     }
 
     public double getValue() {
@@ -60,6 +61,14 @@ public class Transaction {
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    public int getCount() {
+        return this.count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public Date getDate() {

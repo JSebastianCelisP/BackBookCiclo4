@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 @ResponseBody
-public class InsufficientUnitsAdvice {
+public class BookRAlreadyExistsAdvice {
     @ResponseBody
-    @ExceptionHandler(InsufficientUnitsException.class)
+    @ExceptionHandler(BookRAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    String InsufficientUnitsAdvice(InsufficientUnitsException ex) {
+    String EntityNotFoundAdvice(BookRAlreadyExistsException ex) {
         return ex.getMessage();
     }
 }
+
