@@ -5,14 +5,16 @@ import org.springframework.data.annotation.Id;
 public class BookS {
     @Id
     private int idBookS;
+    private String bookCover;
     private String title;
     private int units;
     private String author;
     private String description;
     private double price;
 
-    public BookS(int idBookS, String title, int units, String author, String description, double price) {
+    public BookS(int idBookS, String bookCover, String title, int units, String author, String description, double price) {
         this.idBookS = idBookS;
+        this.bookCover = bookCover;
         this.title = title;
         this.units = units;
         this.author = author;
@@ -26,6 +28,14 @@ public class BookS {
 
     public void setIdBookS(int idBookS) {
         this.idBookS = idBookS;
+    }
+
+    public String getBookCover() {
+        return bookCover;
+    }
+
+    public void setBookCover(String bookCover) {
+        this.bookCover = bookCover;
     }
 
     public String getTitle() {
