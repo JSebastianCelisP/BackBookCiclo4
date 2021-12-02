@@ -56,6 +56,7 @@ public class Transaction {
     public void setNameBookS(String nameBookS) {
         this.nameBookS = nameBookS;
     }
+
     public double getValue() {
         return value;
     }

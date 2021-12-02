@@ -51,20 +51,23 @@ public class BookSController {
     }
 
     @PostMapping("/Books/update/{idBookS}")
-    BookS updateBook(@RequestBody BookS book, @PathVariable int idBookS ){
-        if(book.getIdBookS() != idBookS){
-            throw new BookSNotFoundException("Invalid credential");            
+    BookS updateBook(@RequestBody BookS bookUpdate, @PathVariable int idBookS ){
+        BookS book = bookSRepository.findById(idBookS).orElse(null);
+        if(book == null){
+            throw new BookSNotFoundException("Book not found");
         }else{
-            return bookSRepository.save(book);
+            return bookSRepository.save(bookUpdate);
         }
     }
 
     @DeleteMapping ("/Books/delete/{idBookS}")
-    void deleteBook(@RequestBody BookS book, @PathVariable int idBookS){
-        if(book.getIdBookS() != idBookS){
-            throw new BookSNotFoundException("Invalid credential");
+    String deleteBook(@PathVariable int idBookS){
+        BookS book = bookSRepository.findById(idBookS).orElse(null);
+        if(book == null){
+            throw new BookSNotFoundException("book not found");
         }else{
-            bookSRepository.delete(book);
+            bookSRepository.deleteById(idBookS);
+            return "successful deletion";
         }
     }
 }

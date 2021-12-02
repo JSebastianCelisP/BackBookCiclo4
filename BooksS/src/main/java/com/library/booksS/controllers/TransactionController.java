@@ -47,10 +47,9 @@ public class TransactionController {
 
         if (book.getUnits() < transaction.getCount())
             throw new InsufficientUnitsException("Not enough units in stock");
-        if(transaction.getIdUser() != idUser)
-            throw new AccountBInvalidCredentialsException("Invalid credentials");
+
         else if(transaccionR != null){
-            throw new TransactionInvalidDataExpetion("Invalid data, try again");
+            throw new TransactionInvalidDataExpetion("Transaction_id already exists");
         }
         else{
             account.setBalance(account.getBalance() - book.getPrice() * transaction.getCount());
@@ -76,10 +75,14 @@ public class TransactionController {
         }
     }
 
-    @DeleteMapping("/Transaction/delete/")
-    void deleteTransaction(@RequestBody Transaction transaction){
-        transactionRepository.delete(transaction);
-        return;
+    @DeleteMapping("/Transaction/delete/{idTransaction}")
+    String deleteTransaction(@PathVariable int idTransaction){
+        Transaction transaction = transactionRepository.findById(idTransaction).orElse(null);
+        if (transaction == null){
+            throw new TransactionInvalidDataExpetion("Transaction not found");
+        }else {
+            transactionRepository.delete(transaction);
+            return "successful deletion";
+        }
     }
-
 }
