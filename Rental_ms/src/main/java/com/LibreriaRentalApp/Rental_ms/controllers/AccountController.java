@@ -36,22 +36,22 @@ public class AccountController {
     }
 
     @PostMapping("/Account/update/{idUser}")
-    AccountB updateAccount(@RequestBody AccountB account, @PathVariable int idUser) {
-        if(account.getIdUser() != idUser){
-            throw new AccountBNotFoundException("Invalid credentials");
+    AccountB updateAccount(@RequestBody AccountB accountUpdate, @PathVariable int idUser) {
+        AccountB account = accountRepository.findById(idUser).orElse(null);
+        if(account == null) {
+            throw new AccountBNotFoundException("Account not found");
         }else{
-            return accountRepository.save(account);
+            return accountRepository.save(accountUpdate);
         }
     }
 
     @DeleteMapping("/Account/delete/{idUser}")
-    void deleteAccount(@RequestBody AccountB account, @PathVariable int idUser) {
-
-        if(account.getIdUser() != idUser){
-            throw new AccountBNotFoundException("Invalid credentials");
+    void deleteAccount(@PathVariable int idUser) {
+        AccountB account = accountRepository.findById(idUser).orElse(null);
+        if(account == null){
+            throw new AccountBNotFoundException("Account not found");
         }else{
-            accountRepository.delete(account);            
+            accountRepository.deleteById(idUser);
         }
     }
-
 }

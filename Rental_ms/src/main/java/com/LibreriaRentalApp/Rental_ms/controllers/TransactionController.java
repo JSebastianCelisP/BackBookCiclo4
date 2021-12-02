@@ -36,18 +36,17 @@ public class TransactionController {
         AccountB account = accountRepository.findById(idUser).orElse(null);
         BookR book = bookRRepository.findById(transaction.getIdBookR()).orElse(null);
 
-
         if (account == null)
             throw new AccountBNotFoundException("Account not found");
 
         if (book == null)
             throw new BookRNotFoundException("Book not found");
+
         if (book.getUnits() <= 0)
             throw new InsufficientUnitsException("Not enough units in stock");
-        if(transaction.getIdUser() != idUser){
-            throw new AccountBInvalidCredentialsException("Invalid credentials");
-        }else if(transactionR != null){
-            throw new TransactionInvalidDataExpetion("Invalid data, try again");
+
+        if (transactionR != null){
+            throw new TransactionInvalidDataExpetion("Transaction_id already exists");
         }
         else{
             account.setCount(account.getCount() + transaction.getCount());
@@ -72,10 +71,14 @@ public class TransactionController {
         }
     }
 
-    @DeleteMapping("/Transaction/delete")
-    void deleteTransaction(@RequestBody Transaction transaction){
-        transactionRepository.delete(transaction);
-        return;
+    @DeleteMapping("/Transaction/delete/{idTransaction}")
+    String deleteTransaction(@PathVariable int idTransaction){
+        Transaction transaction = transactionRepository.findById(idTransaction).orElse(null);
+        if (transaction == null){
+            throw new TransactionInvalidDataExpetion("Transaction not found");
+        }else {
+            transactionRepository.delete(transaction);
+            return "successful deletion";
+        }
     }
-
 }
