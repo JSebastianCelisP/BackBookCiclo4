@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class InsufficientUnitsAdvice {
     @ResponseBody
     @ExceptionHandler(InsufficientUnitsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.SEE_OTHER)
     String InsufficientUnitsAdvice(InsufficientUnitsException ex) {
         return ex.getMessage();
     }
