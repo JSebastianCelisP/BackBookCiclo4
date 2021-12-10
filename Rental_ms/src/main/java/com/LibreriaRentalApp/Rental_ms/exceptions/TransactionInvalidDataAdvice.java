@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class TransactionInvalidDataAdvice {
     @ResponseBody
     @ExceptionHandler(TransactionInvalidDataExpetion.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.MULTIPLE_CHOICES)
     String TransactionInvalidDataAdvice(TransactionInvalidDataExpetion ex) {
         return ex.getMessage();
     }
