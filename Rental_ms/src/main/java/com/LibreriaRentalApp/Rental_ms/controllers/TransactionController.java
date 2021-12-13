@@ -42,7 +42,7 @@ public class TransactionController {
         if (book == null)
             throw new BookRNotFoundException("Book not found");
 
-        if (book.getUnits() <= 0)
+        if (book.getUnits() < transaction.getCount())
             throw new InsufficientUnitsException("Not enough units in stock");
 
         if (transactionR != null){
